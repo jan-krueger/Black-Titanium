@@ -1,5 +1,7 @@
 package de.SweetCode.BlackTitanium.Texture;
 
+import de.SweetCode.BlackTitanium.Texture.SpriteSheet.SpriteSheetTypes;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -23,6 +25,11 @@ public enum TextureTypes implements TextureType {
         @Override
         public BufferedImage getTexture() {
             return TextureTypes.textureHandler.getTexture(this);
+        }
+
+        @Override
+        public SpriteSheetTypes getSpriteSheetType() {
+            return SpriteSheetTypes.ENTITY;
         }
 
         @Override

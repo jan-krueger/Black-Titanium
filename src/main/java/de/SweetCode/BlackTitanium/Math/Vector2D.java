@@ -26,4 +26,12 @@ public class Vector2D {
     public int getLength() {
         return this.length;
     }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
 }

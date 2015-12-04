@@ -81,7 +81,7 @@ public class Location implements Cloneable {
     }
 
     @Override
-    public Object clone() {
+    public Location clone() {
         return new Location(this.getX(), this.getY());
     }
 

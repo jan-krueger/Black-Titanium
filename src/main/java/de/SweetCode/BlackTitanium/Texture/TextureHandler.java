@@ -24,10 +24,15 @@ public class TextureHandler {
 
     }
 
+    /**
+     * Returns the texture for the given texture type.
+     * @param textureType
+     * @return
+     */
     public BufferedImage getTexture(TextureType textureType) {
 
         if(!(this.textures.containsKey(textureType))) {
-            throw new IllegalArgumentException(String.format("%s is a unknown or not loaded texture type."));
+            throw new IllegalArgumentException(String.format("%s is a unknown or not loaded texture type.", textureType.getName()));
         }
 
         return this.textures.get(textureType);
