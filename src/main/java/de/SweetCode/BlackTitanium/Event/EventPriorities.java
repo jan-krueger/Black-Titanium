@@ -5,6 +5,19 @@ package de.SweetCode.BlackTitanium.Event;
  */
 public enum EventPriorities implements EventPriority {
 
+    LOWEST {
+
+        @Override
+        public String getName() {
+            return "Lowest";
+        }
+
+        @Override
+        public double getValue() {
+            return 0;
+        }
+
+    },
     LOW {
         @Override
         public String getName() {
@@ -13,21 +26,22 @@ public enum EventPriorities implements EventPriority {
 
         @Override
         public double getValue() {
-            return 0;
+            return 25;
         }
     },
-    MIDDLE {
+    NORMAL {
         @Override
         public String getName() {
-            return "Middle";
+            return "Normal";
         }
 
         @Override
         public double getValue() {
-            return 5;
+            return 50;
         }
     },
     HIGH {
+
         @Override
         public String getName() {
             return "High";
@@ -35,8 +49,22 @@ public enum EventPriorities implements EventPriority {
 
         @Override
         public double getValue() {
-            return 10;
+            return 75;
         }
+
+    },
+    HIGHEST {
+
+        @Override
+        public String getName() {
+            return "Highest";
+        }
+
+        @Override
+        public double getValue() {
+            return 100;
+        }
+
     }
 
 }

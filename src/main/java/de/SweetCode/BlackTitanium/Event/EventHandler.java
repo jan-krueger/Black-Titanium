@@ -1,49 +1,103 @@
 package de.SweetCode.BlackTitanium.Event;
 
-import java.lang.reflect.InvocationTargetException;
+import javax.xml.bind.Marshaller;
 import java.lang.reflect.Method;
+import java.util.*;
 
 /**
  * Created by Yonas on 04.12.2015.
  */
-public class EventHandler implements Comparable<EventHandler> {
+public class EventHandler {
 
-    private EventListener eventListener;
-    private Method method;
-    private Subscribe subscribe;
+    private Map<Class<? extends Event>, TreeSet<EventHolder>> events = new HashMap<>();
+    private List<EventListener> eventListeners = new ArrayList<>();
 
-    public EventHandler(EventListener eventListener, Method method, Subscribe subscribe) {
-        this.eventListener = eventListener;
-        this.method = method;
-        this.subscribe = subscribe;
-    }
+    public EventHandler() {}
 
-    public void execute(Event event) {
-        try {
-            this.method.invoke(this.eventListener, event);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
-    }
+    public boolean trigger(Event event) {
 
-    public EventPriorities getPriority() {
-        return this.subscribe.priority();
-    }
-
-    @Override
-    public int compareTo(EventHandler o) {
-
-        if(o.getPriority().getValue() == this.getPriority().getValue()) {
-            return 0;
+        if(!(this.events.containsKey(event.getClass()))) {
+            return false;
         }
 
-        if(o.getPriority().getValue() < this.getPriority().getValue()) {
-            return 1;
+        for(EventHolder eventHandler : this.events.get(event.getClass())) {
+
+            eventHandler.execute(event);
+
         }
 
-        return -1;
+        return true;
 
     }
+
+    public boolean trigger(Event event, EventTriggerCallback eventTriggerCallback) {
+
+        if(!(this.events.containsKey(event.getClass()))) {
+            return false;
+        }
+
+        Collection<EventHolder> eventHolders = this.events.get(event.getClass());
+
+        for(EventHolder eventHolder : eventHolders) {
+
+            eventHolder.execute(event);
+
+        }
+
+        eventTriggerCallback.callback(
+                event,
+                eventHolders
+        );
+
+        return true;
+
+    }
+
+    public boolean registerListener(EventListener listener) {
+
+        if(this.eventListeners.contains(listener)) {
+            return false;
+        }
+
+        this.eventListeners.add(listener);
+
+        Method[] methods = listener.getClass().getDeclaredMethods();
+        for(Method method : methods) {
+
+            Subscribe subscribe = method.getAnnotation(Subscribe.class);
+
+            if(subscribe == null) {
+                continue;
+            }
+
+            if(!(method.getParameterTypes().length == 1)) {
+                continue;
+            }
+
+            if(!(method.getReturnType().equals(void.class))) {
+                continue;
+            }
+
+            if(!(Event.class.isAssignableFrom(method.getParameterTypes()[0]))) {
+                continue;
+            }
+
+            Class<? extends Event> argument = (Class<? extends Event>) method.getParameterTypes()[0];
+
+            if(!(this.events.containsKey(argument))) {
+                this.events.put(argument, new TreeSet<>());
+            }
+
+            this.events.get(argument).add(new EventHolder(
+                    listener,
+                    method,
+                    subscribe
+            ));
+
+        }
+
+        return true;
+
+    }
+
 }

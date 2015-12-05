@@ -1,6 +1,7 @@
 package de.SweetCode.Test;
 
-import de.SweetCode.BlackTitanium.Event.EventManager;
+import de.SweetCode.BlackTitanium.Event.EventHandler;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -12,9 +13,15 @@ public class EventTester {
     @Test
     public void testEventListener() {
 
-        EventManager eventManager = new EventManager();
-        eventManager.registerListener(new TestListener());
-        eventManager.trigger(new TestMessageEvent("Hello, I'm awesome"));
+        EventHandler eventHandler = new EventHandler();
+        eventHandler.registerListener(new TestListener());
+
+        eventHandler.trigger(new TestMessageEvent("Hello, I'm awesome"), (event, eventHolders) -> {
+
+            Assert.assertEquals(eventHolders.size(), 3);
+
+        });
+
 
     }
 

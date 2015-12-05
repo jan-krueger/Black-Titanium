@@ -1,8 +1,8 @@
 package de.SweetCode.BlackTitanium.Entity;
 
 import de.SweetCode.BlackTitanium.Event.EventHandler;
-import de.SweetCode.BlackTitanium.Event.EventManager;
 import de.SweetCode.BlackTitanium.Event.Events.EntitySpawnEvent;
+import de.SweetCode.BlackTitanium.Event.Events.RenderEvent;
 import de.SweetCode.BlackTitanium.GameHandler;
 
 import java.awt.*;
@@ -12,8 +12,10 @@ import java.awt.*;
  */
 public class EntityHandler extends GameHandler<Entity> {
 
-    public EntityHandler(EventManager eventManager) {
-        super(eventManager);
+    private EventHandler eventHandler;
+
+    public EntityHandler(EventHandler eventHandler) {
+        this.eventHandler = eventHandler;
     }
 
     @Override
@@ -33,7 +35,9 @@ public class EntityHandler extends GameHandler<Entity> {
 
         this.getData().forEach(entity -> {
 
-            //TODO event call
+            RenderEvent renderEvent = new RenderEvent(RenderEvent.RenderEventTypes.ENTITY, graphics);
+            this.eventHandler.trigger(renderEvent);
+
             entity.render(graphics);
 
         });
@@ -46,7 +50,7 @@ public class EntityHandler extends GameHandler<Entity> {
 
         EntitySpawnEvent entitySpawnEvent = new EntitySpawnEvent(value);
 
-        this.getEventManager().trigger(entitySpawnEvent);
+        this.eventHandler.trigger(entitySpawnEvent);
 
         if(entitySpawnEvent.isCancelled()) {
             return false;

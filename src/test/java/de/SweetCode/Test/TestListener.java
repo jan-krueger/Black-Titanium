@@ -1,6 +1,7 @@
 package de.SweetCode.Test;
 
 import de.SweetCode.BlackTitanium.Event.EventListener;
+import de.SweetCode.BlackTitanium.Event.EventPriorities;
 import de.SweetCode.BlackTitanium.Event.Subscribe;
 
 /**
@@ -8,12 +9,14 @@ import de.SweetCode.BlackTitanium.Event.Subscribe;
  */
 public class TestListener implements EventListener {
 
+    @Subscribe(priority = EventPriorities.HIGH)
+    public void waitForMessageHigh(TestMessageEvent event) {}
+
     @Subscribe
-    public void waitForMessage(TestMessageEvent event) {
+    public void waitForMessageNormal(TestMessageEvent event) {}
 
-        System.out.println("Recieved: " + event.getMessage());
-
-    }
+    @Subscribe(priority = EventPriorities.LOW)
+    public void waitForMessageLow(TestMessageEvent event) { }
 
 }
 

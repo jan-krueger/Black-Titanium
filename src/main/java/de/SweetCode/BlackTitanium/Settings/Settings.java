@@ -51,6 +51,7 @@ public enum Settings implements Setting {
 
     },
     BUFFER_STRATEGY_BUFFERS {
+
         public String getName() {
             return "Buffer Strategy Buffers";
         }
@@ -61,6 +62,24 @@ public enum Settings implements Setting {
 
         public Integer getValue() {
             return 3;
+        }
+
+    },
+    ANIMATION_FRAME_RATE {
+
+        @Override
+        public String getName() {
+            return "Animation Frame Rate";
+        }
+
+        @Override
+        public String getPath() {
+            return "animation.frame.rate";
+        }
+
+        @Override
+        public Integer getValue() {
+            return 25;
         }
 
     }

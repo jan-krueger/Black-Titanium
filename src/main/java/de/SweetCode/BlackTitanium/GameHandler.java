@@ -1,7 +1,5 @@
 package de.SweetCode.BlackTitanium;
 
-import de.SweetCode.BlackTitanium.Event.EventManager;
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,17 +9,9 @@ import java.util.List;
  */
 public abstract class GameHandler<T> {
 
-    private EventManager eventManager;
+    private List<T> data = new ArrayList<>();
 
-    private List<T> data = new ArrayList<T>();
-
-    public GameHandler(EventManager eventManager) {
-        this.eventManager = eventManager;
-    }
-
-    public EventManager getEventManager() {
-        return this.eventManager;
-    }
+    public GameHandler() {}
 
     /**
      * Returns the original data set.

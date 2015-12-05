@@ -2,7 +2,7 @@ package de.SweetCode.BlackTitanium.Input;
 
 import de.SweetCode.BlackTitanium.Entity.Entities.Player;
 import de.SweetCode.BlackTitanium.Entity.EntityHandler;
-import de.SweetCode.BlackTitanium.Event.EventManager;
+import de.SweetCode.BlackTitanium.Event.EventHandler;
 import de.SweetCode.BlackTitanium.Event.Events.PlayerMoveEvent;
 import de.SweetCode.BlackTitanium.Math.Location;
 
@@ -15,11 +15,11 @@ import java.awt.event.KeyListener;
 public class InputHandler implements KeyListener {
 
     private EntityHandler entityHandler;
-    private EventManager eventManager;
+    private EventHandler eventHandler;
 
-    public InputHandler(EntityHandler entityHandler, EventManager eventManager) {
+    public InputHandler(EntityHandler entityHandler, EventHandler eventHandler) {
         this.entityHandler = entityHandler;
-        this.eventManager = eventManager;
+        this.eventHandler = eventHandler;
     }
 
     @Override
@@ -59,7 +59,7 @@ public class InputHandler implements KeyListener {
                 if(!(from.equals(to))) {
 
                     PlayerMoveEvent playerMoveEvent = new PlayerMoveEvent((Player) entity, entity.getVelocity(), from, to);
-                    this.eventManager.trigger(playerMoveEvent);
+                    this.eventHandler.trigger(playerMoveEvent);
 
                     if(playerMoveEvent.isCancelled()) {
                         entity.getLocation().setX(from.getX());
@@ -85,7 +85,19 @@ public class InputHandler implements KeyListener {
 
             if(entity instanceof Player) {
 
-                
+                switch (e.getKeyCode()) {
+
+                    case KeyEvent.VK_S:
+                    case KeyEvent.VK_W:
+                        entity.getVelocity().setY(0);
+                        break;
+
+                    case KeyEvent.VK_D:
+                    case KeyEvent.VK_A:
+                        entity.getVelocity().setX(0);
+                        break;
+
+                }
 
             }
 
